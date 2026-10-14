@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>事务工具台</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    .factory-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+    .factory-modal.active {
+      display: flex;
+    }
+    .factory-modal-box {
+      background: white;
+      border-radius: 16px;
+      padding: 28px;
+      min-width: 320px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+    }
+    .factory-modal-box h3 {
+      margin: 0 0 8px 0;
+      font-size: 18px;
+      font-weight: 700;
+    }
+    .factory-modal-box p {
+      margin: 0 0 20px 0;
+      font-size: 14px;
+      color: #64748b;
+    }
+    .factory-options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .factory-option {
+      display: flex;
+      align-items: center;
+      padding: 14px 16px;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.15s;
+      font-size: 15px;
+      font-weight: 500;
+    }
+    .factory-option:hover {
+      border-color: #2563eb;
+      background: #f0f7ff;
+      color: #2563eb;
+    }
+    .factory-option svg {
+      width: 20px;
+      height: 20px;
+      margin-right: 12px;
+      flex-shrink: 0;
+    }
+    .factory-option-close {
+      margin-top: 14px;
+      text-align: center;
+      font-size: 13px;
+      color: #94a3b8;
+      cursor: pointer;
+    }
+    .factory-option-close:hover {
+      color: #64748b;
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="app-header">
+      <h1>事务工具台</h1>
+      <p>事务管理工具集合</p>
+    </header>
+    <main class="app-content">
+      <div class="icon-grid">
+        <div class="icon-card active" id="riskShiftCard">
+          <div class="icon-box">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2L2 7v10l10 5 10-5V7l-10-5zm0 2.18L19.5 8 12 11.82 4.5 8 12 4.18zM4 9.27l7 3.5v7.96l-7-3.5V9.27zm9 11.46v-7.96l7-3.5v7.46l-7 3.5z"/>
+              <path d="M12 6.5L7.5 9 12 11.5 16.5 9 12 6.5z" opacity="0.5"/>
+            </svg>
+          </div>
+          <span class="icon-label">风险推移</span>
+          <span class="icon-badge">可用</span>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- 科室选择弹窗 -->
+  <div class="factory-modal" id="factoryModal">
+    <div class="factory-modal-box">
+      <h3>选择科室</h3>
+      <p>请选择要进入的风险推移</p>
+      <div class="factory-options">
+        <div class="factory-option" data-factory="1">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7v10l10 5 10-5V7l-10-5z"/></svg>
+          埃安一厂
+        </div>
+        <div class="factory-option" data-factory="2">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7v10l10 5 10-5V7l-10-5z"/></svg>
+          埃安二厂
+        </div>
+      </div>
+      <div class="factory-option-close" id="factoryModalClose">取消</div>
+    </div>
+  </div>
+
+  <script>
+    const modal = document.getElementById('factoryModal');
+    const riskCard = document.getElementById('riskShiftCard');
+
+    riskCard.addEventListener('click', () => {
+      modal.classList.add('active');
+    });
+
+    document.querySelectorAll('.factory-option').forEach(opt => {
+      opt.addEventListener('click', () => {
+        const factory = opt.dataset.factory;
+        location.href = `pages/risk-shift.html?factory=${factory}`;
+      });
+    });
+
+    document.getElementById('factoryModalClose').addEventListener('click', () => {
+      modal.classList.remove('active');
+    });
+
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) modal.classList.remove('active');
+    });
+  </script>
+</body>
+</html>
